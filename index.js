@@ -10,23 +10,19 @@ fs.readFile("./feedback.json", "utf8", (err, data) => {
   obj = JSON.parse(data);
 });
 
-
-
-
-
 app.put("/feedback", (req, res) => {
-    let key = Object.keys(req)  
-    if(key){
-    
-    }
-
-
-
+  let key = Object.keys(req.body.data)
+  if (key && key.length > 0) {
+    key.forEach((id)=>{
+      let item = obj.find((ele) => ele.id == id)
+      Object.assign(item, req.body.data[id])
+    })
+  }
   res.send("create Request Successfully").json(obj)
 })
 
 app.get("/feedback", (req, res) => {
-  res.send(obj);
+  res.status(200).json(obj);
 });
 
 app.listen(3000, () => {
